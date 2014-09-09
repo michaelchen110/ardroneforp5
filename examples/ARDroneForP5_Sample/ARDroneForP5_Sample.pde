@@ -6,10 +6,11 @@ ARDroneForP5 ardrone;
 String keyValue="";
 long preTime = 0;
 long nowTime = 0;
+char last_command='p';
 
 void setup() {
   size(960, 720);
-
+  frameRate(400);
   ardrone=new ARDroneForP5("192.168.1.1", ARDroneVersion.ARDRONE2);
   // connect to the AR.Drone
   ardrone.connect();
@@ -49,10 +50,13 @@ void draw() {
   text(vel, 20, 140);
   String bat = "battery:" + battery + " %";
   text(bat, 20, 170);
+  if (keyCode == last_command) 
+    key();
+  last_command=(char)keyCode;
 }
 
 // controlling AR.Drone through key input
-void keyPressed() {
+void key() {
   if (key == CODED) {
     preTime = System.currentTimeMillis() / 1000;
     if (keyCode == UP) {
@@ -134,4 +138,3 @@ void keyPressed() {
     }
   }
 }
-
