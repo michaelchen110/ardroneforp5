@@ -7,6 +7,7 @@ String keyValue="";
 long preTime = 0;
 long nowTime = 0;
 char last_command='p';
+int done=1;
 
 void setup() {
   size(960, 720);
@@ -57,84 +58,91 @@ void draw() {
 
 // controlling AR.Drone through key input
 void key() {
-  if (key == CODED) {
-    preTime = System.currentTimeMillis() / 1000;
-    if (keyCode == UP) {
-      keyValue = "UP";
-      ardrone.forward(20); // go forward
+  if(!done)
+  {  
+    done=1;
+    if (key == CODED) {
+      preTime = System.currentTimeMillis() / 1000;
+      if (keyCode == UP) {
+        keyValue = "UP";
+        ardrone.forward(20); // go forward
+      } 
+      else if (keyCode == DOWN) {
+        keyValue = "DOWN";
+        ardrone.backward(20); // go backward
+      } 
+      else if (keyCode == LEFT) {
+        keyValue = "LEFT";
+        ardrone.goLeft(20); // go left
+      } 
+      else if (keyCode == RIGHT) {
+        keyValue = "RIGHT";
+        ardrone.goRight(20); // go right
+      } 
+      else if (keyCode == SHIFT) {
+        ardrone.takeOff(); // take off, AR.Drone cannot move while landing
+      } 
+      else if (keyCode == CONTROL) {
+        ardrone.landing();
+        // landing
+      }
     } 
-    else if (keyCode == DOWN) {
-      keyValue = "DOWN";
-      ardrone.backward(20); // go backward
-    } 
-    else if (keyCode == LEFT) {
-      keyValue = "LEFT";
-      ardrone.goLeft(20); // go left
-    } 
-    else if (keyCode == RIGHT) {
-      keyValue = "RIGHT";
-      ardrone.goRight(20); // go right
-    } 
-    else if (keyCode == SHIFT) {
-      ardrone.takeOff(); // take off, AR.Drone cannot move while landing
-    } 
-    else if (keyCode == CONTROL) {
-      ardrone.landing();
-      // landing
-    }
-  } 
-  else {
-    if (key == 's') {
-      nowTime = System.currentTimeMillis() / 1000;
+    else {
+      if (key == 's') {
+        nowTime = System.currentTimeMillis() / 1000;
 
-      try {
-        if (keyValue == "UP") {
-          ardrone.backward(100);
-        }
-        else if (keyValue == "DOWN") {
-          ardrone.forward(100);
-        }
-        else if (keyValue == "LEFT") {
-          ardrone.goRight(100);
-        }
-        else if (keyValue == "RIGHT") {
-          ardrone.goLeft(100);
-        }
-        else {
-          preTime = nowTime;
-        } 
-        Thread.sleep((nowTime-preTime)*300);
-        keyValue = "";
-      } catch (Exception e) {}
+        try {
+          if (keyValue == "UP") {
+            ardrone.backward(100);
+          }
+          else if (keyValue == "DOWN") {
+            ardrone.forward(100);
+          }
+          else if (keyValue == "LEFT") {
+            ardrone.goRight(100);
+          }
+          else if (keyValue == "RIGHT") {
+            ardrone.goLeft(100);
+          }
+          else {
+            preTime = nowTime;
+          } 
+          Thread.sleep((nowTime-preTime)*300);
+          keyValue = "";
+        } catch (Exception e) {}
 
-      ardrone.stop(); // hovering
-    } 
-    else if (key == 'r') {
-      ardrone.spinRight(); // spin right
-    } 
-    else if (key == 'l') {
-      ardrone.spinLeft(); // spin left
-    } 
-    else if (key == 'u') {
-      ardrone.up(); // go up
-    }
-    else if (key == 'd') {
-      ardrone.down(); // go down
-    }
-    else if (key == '1') {
-      ardrone.setHorizontalCamera(); // set front camera
-    }
-    else if (key == '2') {
-      ardrone.setHorizontalCameraWithVertical(); // set front camera with second camera (upper left)
-    }
-    else if (key == '3') {
-      ardrone.setVerticalCamera(); // set second camera
-    }
-    else if (key == '4') {
-      ardrone.setVerticalCameraWithHorizontal(); //set second camera with front camera (upper left)
-    }
-    else if (key == '5') {
-      ardrone.toggleCamera(); // set next camera setting
+        ardrone.stop(); // hovering
+      } 
+      else if (key == 'r') {
+        ardrone.spinRight(); // spin right
+      } 
+      else if (key == 'l') {
+        ardrone.spinLeft(); // spin left
+      } 
+      else if (key == 'u') {
+        ardrone.up(); // go up
+      }
+      else if (key == 'd') {
+        ardrone.down(); // go down
+      }
+      else if (key == '1') {
+        ardrone.setHorizontalCamera(); // set front camera
+      }
+      else if (key == '2') {
+        ardrone.setHorizontalCameraWithVertical(); // set front camera with second camera (upper left)
+      }
+      else if (key == '3') {
+        ardrone.setVerticalCamera(); // set second camera
+      }
+      else if (key == '4') {
+        ardrone.setVerticalCameraWithHorizontal(); //set second camera with front camera (upper left)
+      }
+      else if (key == '5') {
+        ardrone.toggleCamera(); // set next camera setting
+      }
     }
   }
+}
+void keyPressed() {
+  done=0;
 }
