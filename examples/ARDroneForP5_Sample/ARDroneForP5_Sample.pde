@@ -11,7 +11,7 @@ int done=1;
 
 void setup() {
   size(960, 720);
-  frameRate(400);
+  frameRate(3);
   ardrone=new ARDroneForP5("192.168.1.1", ARDroneVersion.ARDRONE2);
   // connect to the AR.Drone
   ardrone.connect();
@@ -45,6 +45,7 @@ void draw() {
   float[] velocity = ardrone.getVelocity();
   int battery = ardrone.getBatteryPercentage();
 
+  textSize(12);
   String attitude = "pitch:" + pitch + "\nroll:" + roll + "\nyaw:" + yaw + "\naltitude:" + altitude;
   text(attitude, 20, 85);
   String vel = "vx:" + velocity[0] + "\nvy:" + velocity[1];
@@ -58,6 +59,7 @@ void draw() {
 
 // controlling AR.Drone through key input
 void key() {
+  textSize(40);
   if(done==0)
   {  
     done=1;
@@ -66,24 +68,31 @@ void key() {
       if (keyCode == UP) {
         keyValue = "UP";
         ardrone.forward(20); // go forward
+        text("RightHandFront", 100, 100);
+        println("RightHandFront");
       } 
       else if (keyCode == DOWN) {
         keyValue = "DOWN";
         ardrone.backward(20); // go backward
+        text("RightHandBack", 100, 100);
+        println("RightHandBack");
       } 
       else if (keyCode == LEFT) {
         keyValue = "LEFT";
         ardrone.goLeft(20); // go left
+        text("RightHandLeft", 100, 100);
+        println("RightHandLeft");
       } 
       else if (keyCode == RIGHT) {
         keyValue = "RIGHT";
         ardrone.goRight(20); // go right
-      } 
-      else if (keyCode == SHIFT) {
-        ardrone.takeOff(); // take off, AR.Drone cannot move while landing
+        text("RightHandRight", 100, 100);
+        println("RightHandRight");
       } 
       else if (keyCode == CONTROL) {
         ardrone.landing();
+        text("BothHandsDown", 100, 100);
+        println("BothHandsDown");
         // landing
       }
     } 
@@ -112,6 +121,11 @@ void key() {
         } catch (Exception e) {}
 
         ardrone.stop(); // hovering
+        text("At Rest", 100, 100);
+      }else if (key == 'z') {
+        ardrone.takeOff(); // take off, AR.Drone cannot move while landing
+        text("BothHandsUp", 100, 100);
+        println("BothHandsUp");
       } 
       else if (key == 'r') {
         ardrone.spinRight(); // spin right
@@ -121,9 +135,13 @@ void key() {
       } 
       else if (key == 'u') {
         ardrone.up(); // go up
+        text("RightHandUp", 100, 100);
+        println("RightHandUp");
       }
       else if (key == 'd') {
         ardrone.down(); // go down
+        text("RightHandDown", 100, 100);
+        println("RightHandDown");
       }
       else if (key == '1') {
         ardrone.setHorizontalCamera(); // set front camera
