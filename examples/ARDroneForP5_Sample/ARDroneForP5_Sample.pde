@@ -58,7 +58,7 @@ void draw() {
 
 // controlling AR.Drone through key input
 void key() {
-  if(!done)
+  if(done==0)
   {  
     done=1;
     if (key == CODED) {
