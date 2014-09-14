@@ -137,25 +137,30 @@ void keyPressed() {
     // preKey = key;
     moving = false;
     if (key == 's') {
-      nowTime = System.currentTimeMillis() / 1000;
+      // nowTime = System.currentTimeMillis() / 1000;
+      float[] velocity = ardrone.getVelocity();
+
       try {
-        if (keyValue.equals("UP")) {
-          ardrone.backward(100);
+        while (Math.abs(velocity[0]) > 30) {
+          if (velocity[0] > 0) {
+            ardrone.backward(100);
+          }
+          else{
+            ardrone.forward(100);
+          }
+          Thread.sleep(Math.abs(velocity[0])*10);
         }
-        else if (keyValue.equals("DOWN")) {
-          ardrone.forward(100);
+        
+        while (Math.abs(velocity[1]) > 30) {
+          if (velocity[1] > 0) {
+            ardrone.goRight(100);
+          }
+          else {
+            ardrone.goLeft(100);
+          }
+          Thread.sleep(Math.abs(velocity[1])*10);
         }
-        else if (keyValue.equals("LEFT")) {
-          ardrone.goRight(100);
-        }
-        else if (keyValue.equals("RIGHT")) {
-          ardrone.goLeft(100);
-        }
-        else {
-          preTime = nowTime;
-        } 
-        Thread.sleep((nowTime-preTime)*300);
-        keyValue = "";
+
       } catch (Exception e) {}
       
       ardrone.stop(); // hovering
