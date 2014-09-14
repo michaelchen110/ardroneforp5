@@ -137,28 +137,46 @@ void keyPressed() {
     // preKey = key;
     moving = false;
     if (key == 's') {
-      nowTime = System.currentTimeMillis() / 1000;
-      try {
-        if (keyValue.equals("UP")) {
-          ardrone.backward(100);
-        }
-        else if (keyValue.equals("DOWN")) {
-          ardrone.forward(100);
-        }
-        else if (keyValue.equals("LEFT")) {
-          ardrone.goRight(100);
-        }
-        else if (keyValue.equals("RIGHT")) {
-          ardrone.goLeft(100);
-        }
-        else {
-          preTime = nowTime;
-        } 
-        Thread.sleep((nowTime-preTime)*300);
-        keyValue = "";
-      } catch (Exception e) {}
+      // nowTime = System.currentTimeMillis() / 1000;
+      // try {
+      //   if (keyValue.equals("UP")) {
+      //     ardrone.backward(100);
+      //   }
+      //   else if (keyValue.equals("DOWN")) {
+      //     ardrone.forward(100);
+      //   }
+      //   else if (keyValue.equals("LEFT")) {
+      //     ardrone.goRight(100);
+      //   }
+      //   else if (keyValue.equals("RIGHT")) {
+      //     ardrone.goLeft(100);
+      //   }
+      //   else {
+      //     preTime = nowTime;
+      //   } 
+      //   Thread.sleep((nowTime-preTime)*300);
+      //   keyValue = "";
+      // } catch (Exception e) {}
       
-      ardrone.stop(); // hovering
+      // ardrone.stop(); // hovering
+
+      while (Math.abs(velocity[0]) > 50) {
+        if (velocity[0] < 0) 
+          ardrone.forward(Math.abs(velocity[0]));
+        else 
+          ardrone.backward(Math.abs(velocity[0]));
+      }
+      ardrone.stop();
+      
+      while (Math.abs(velocity[1]) > 50) {
+        if (velocity[1] < 0) 
+          ardrone.goRight(Math.abs(velocity[1]));
+        else   
+          ardrone.goLeft(Math.abs(velocity[1]));
+      }
+      ardrone.stop();
+    }
+      
     } 
     else {
       keyValue = "";
